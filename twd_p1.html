@@ -13,11 +13,12 @@
 
 #main {
 float:left;
-width: 850px;
+width: 820px;
 }
-#sidebar {
-float:right;
-width:20px;
+#side {
+padding-top: 150px;
+float:left;
+width:10px;
 }
 
 table {
@@ -37,7 +38,7 @@ table tr:hover td {
 table th, table td {
   color: #999;
   border: 1px solid #eee;
-  padding: 7px 15px;
+  padding: 8px 8px;
   border-collapse: collapse;
 }
 table th {
@@ -72,21 +73,21 @@ table th.last {
   font-family: 'Exo 2', sans-serif;
 }
 
-@media only screen and (min-device-width: 800px) and (max-device-width: 800px) {
+@media only screen and (min-device-width: 800) and (max-device-width: 1600px) {
   #visual {
     -webkit-user-select: none;
     font-size: 1.2em;
   }
 }
 
-@media only screen and (min-device-width: 800px) and (max-device-width: 800px) {
+@media only screen and (min-device-width: 800) and (max-device-width: 1600px) {
   #visual {
     -webkit-user-select: none;
   }
 }
 </style>
 <body>
-<script src="http://d3js.org/d3.v3.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 var visual = document.getElementById("visual");
 
@@ -103,32 +104,19 @@ var matrix = [
 [10,10,485,167,11,0,0,0,0,0]
 ];
 
+var df_names = ['Kto','Komu','Procent','Liczność']
 var df = [
-['Kukiz15',"Kukiz15",48],
-['Kukiz15',"N",91],
-['Kukiz15',"PiS",74],
-['Kukiz15',"PO",55],
-['Kukiz15',"PSL",10],
-['N',"Kukiz15",19],
-['N',"N",46],
-['N','PiS',154],
-['N','PO',16],
-['N',"PSL",10],
-['PiS',"Kukiz15",258],
-['PiS',"N",1323],
-['PiS',"PiS",1069],
-['PiS',"PO",2433],
-['PiS',"PSL",485],
-['PO',"Kukiz15",513],
-['PO',"N",263],
-['PO',"PiS",3334],
-['PO',"PO",934],
-['PO',"PSL",167],
-['PSL',"Kukiz15",12],
-['PSL',"N",12],
-['PSL',"PiS",107],
-['PSL',"PO",10],
-['PSL',"PSL",11],
+['Kukiz15',"Niez.",0.36,1],
+['Kukiz15',"WiS",0.36,1],
+['N',"Niez.",0.4,1],
+['N',"WiS",0.81,2],
+["Niez.","Niez.",66.67,2],
+["Niez.","PO",33.33,1],
+['PiS',"Niez",0.36,20],
+['PiS',"WiS",0.05,3],
+['PO',"Niez",0.91,48],
+['PO',"WiS",0.27,14],
+['WiS',"PSL",100,1]
 ];
 
 var przerywania = 0;
@@ -146,8 +134,8 @@ var chord_options = {
     "rotation": rotation,
     //"colors": ["#000000", "#377DB8", "#F5DEB3", "#EE82EE", "#40E0D0",
     //           "#FF6347", "#D8BFD8", "#D2B48C", "#4682B4", "#00FF7F"]
-    "colors": ["#a04406", "#005cb2", "#423f3e", "#b4b513", "#0ea365",
-               "#ea8948", "#2c82d3", "#a39d99", "#eddb1c", "#11e08a"]
+    "colors": ["#c10915", "8e00ba", "#000884", "#efa80e", "#169324",
+               "#ff9987", "#e199f7", "#aed2fc", "#ffdb82", "#b0ff8e"]
 };
 
 var divwrap = d3.select("body").append('div')
@@ -158,7 +146,6 @@ var divmain = divwrap.append('div')
 
 var divside = divwrap.append('div')
             .attr("id","side")
-            .append('pre')
 
 function Chord(container, options, matrix) {
 
@@ -287,7 +274,7 @@ function Chord(container, options, matrix) {
             .attr("y",outerRadius+5*textgap)
             .attr("fill","#ff2b2b")
             .attr("text-anchor","middle")
-            .text("ONI PRZERYWALI")
+            .text("Ile razy oni przerywali?")
 
         g2.append("text")
             .attr("class","Podpisy")
@@ -295,7 +282,7 @@ function Chord(container, options, matrix) {
             .attr("y",-outerRadius-3*textgap)
             .attr("fill","#0dc113")
             .attr("text-anchor","middle")
-            .text("IM PRZERYWANO")
+            .text("Ile razy im przerywano?")
 
 
         // helper functions start here
@@ -371,17 +358,17 @@ function Chord(container, options, matrix) {
 
 function tabulate(data, columns) {
     var table = divside.append("table")
-            .attr("style", "margin-left: 150px");
+            .attr("style", "margin-left: 20px");
         thead = table.append("thead");
         tbody = table.append("tbody");
 
     // append the header row
-    // thead.append("tr")
-    //     .selectAll("th")
-    //     .data(columns)
-    //     .enter()
-    //     .append("th")
-    //         .text(function(column) { return column; });
+    thead.append("tr")
+        .selectAll("th")
+        .data(columns)
+        .enter()
+        .append("th")
+            .text(function(self) { return df_names[self]; });
 
     // create a row for each object in the data
     var rows = tbody.selectAll("tr")
@@ -406,7 +393,7 @@ function tabulate(data, columns) {
 
 window.onload = function() {
     Chord(visual, chord_options, matrix);
-    tabulate(df, ['0',"1", "2"]);
+    tabulate(df, ['0',"1", "2","3"]);
 
 }
 
