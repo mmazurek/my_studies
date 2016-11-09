@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <!-- affinity group data, circle rotation, auto-resize svg image, chord function, configuration -->
 <head>
-  <title>Open Chord Example</title>
+  <title>Wykres przerywań wystąpień</title>
   <link href="https://fonts.googleapis.com/css?family=Exo+2:900" rel="stylesheet">
 </head>
 <style>
@@ -26,7 +26,7 @@ table {
   margin: 10px auto;
   border-collapse: collapse;
   border: 1px solid #eee;
-  border-bottom: 2px solid #00cccc;
+  border-bottom: 2px solid #666666;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
 }
 table tr:hover {
@@ -38,17 +38,29 @@ table tr:hover td {
 table th, table td {
   color: #999;
   border: 1px solid #eee;
-  padding: 5px 3px;
+  padding: 6px 4px;
   border-collapse: collapse;
+  font-size: 12px;
 }
 table th {
-  background: #00cccc;
+  background: #666666;
   color: #fff;
   text-transform: uppercase;
-  font-size: 7px;
+  font-size: 12px;
 }
 table th.last {
   border-right: none;
+}
+table caption {
+  color: #999;
+  padding: 6px 4px;
+  border-collapse: collapse;
+
+  fill-opacity: 1.00;
+  font-size: 17px;
+  stroke: #000000;
+  stroke-width: 1.5px;
+  font-family: 'Exo 2', sans-serif;
 }
 
 .chord path {
@@ -134,8 +146,8 @@ var chord_options = {
     "rotation": rotation,
     //"colors": ["#000000", "#377DB8", "#F5DEB3", "#EE82EE", "#40E0D0",
     //           "#FF6347", "#D8BFD8", "#D2B48C", "#4682B4", "#00FF7F"]
-    "colors": ["#c10915", "8e00ba", "#000884", "#efa80e", "#169324",
-               "#ff9987", "#e199f7", "#aed2fc", "#ffdb82", "#b0ff8e"]
+    "colors": ["#ed2026", "#753B64", "#064f8e", "#f16913", "#006837",
+               "#f68f92", "#ba9db1", "#82a7c6", "#f8b489", "#7fb39b"]
 };
 
 var divwrap = d3.select("body").append('div')
@@ -358,8 +370,9 @@ function Chord(container, options, matrix) {
 
 function tabulate(data, columns) {
     var table = divside.append("table")
-            .attr("style", "margin-left: 20px");
-        thead = table.append("thead");
+            .attr("style", "margin-left: 20px"),
+        tcaption = table.append("caption").text("Ilość przerywań dla pozostałych partii")
+        thead = table.append("thead"),
         tbody = table.append("tbody");
 
     // append the header row
